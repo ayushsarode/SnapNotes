@@ -3,29 +3,28 @@ package main
 import (
 	"log"
 
-	"github.com/ayushsarode/SnapNotes/server/config"
-	"github.com/ayushsarode/SnapNotes/server/routes"
-
-	"github.com/ayushsarode/SnapNotes/server/models"
-
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
+	"note-taking-app/config"
+	"github.com/ayushsarode/snapnotes/server/routes"
 )
 
 func main() {
-    // Load environment variables
-    config.LoadEnv()
+	// Load .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-    // Initialize database connection
-    config.InitDB()
+	// Set up the app
+	app := fiber.New()
 
-    // Auto migrate models (create tables if they don't exist)
-    config.GetDB().AutoMigrate(&models.User{}, &models.Note{})
+	// Set up database connection
+	config.SetupDatabase()
 
-    app := fiber.New()
+	// Register routes
+	routes.SetupRoutes(app)
 
-    // Setup routes
-    routes.Setup(app)
-
-    // Start server
-    log.Fatal(app.Listen(":3000"))
+	// Start the server
+	log.Fatal(app.Listen(":3000"))
 }
