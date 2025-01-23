@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"note-taking-app/config"
-	"github.com/ayushsarode/snapnotes/server/routes"
+	"github.com/ayushsarode/snapnotes/routes"
 )
 
 func main() {
